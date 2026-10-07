@@ -1,0 +1,17 @@
+nt lengthOfLastWord(char* s) {
+    int i = strlen(s) - 1;
+    int length = 0;
+
+    // 1. Skip trailing spaces from the end
+    while (i >= 0 && s[i] == ' ') {
+        i--;
+    }
+
+    // 2. Count characters until another space or the beginning is reached
+    while (i >= 0 && s[i] != ' ') {
+        length++;
+        i--;
+    }
+
+    return length;
+}
