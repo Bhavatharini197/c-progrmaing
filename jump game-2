@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int jump(int* nums, int numsSize) {
+    // If the array has only 1 element, we are already at the destination
+    if (numsSize <= 1) {
+        return 0;
+    }
+
+    int jumps = 0;
+    int current_end = 0;
+    int farthest = 0;
+
+    // Loop through the array up to the second-to-last element
+    for (int i = 0; i < numsSize - 1; i++) {
+        // Track the furthest index reachable from current position
+        if (i + nums[i] > farthest) {
+            farthest = i + nums[i];
+        }
+
+        // When we reach the boundary of the current jump level
+        if (i == current_end) {
+            jumps++;
+            current_end = farthest;
+            
+            // Optimization: If we can already reach the last index, stop early
+            if (current_end >= numsSize - 1) {
+                break;
+            }
+        }
+    }
+
+    return jumps;
+}
