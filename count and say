@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* countAndSay(int n) {
+    // Base case: countAndSay(1) = "1"
+    char* current = (char*)malloc(2 * sizeof(char));
+    strcpy(current, "1");
+    
+    if (n == 1) {
+        return current;
+    }
+    
+    // Process iteratively up to n
+    for (int i = 2; i <= n; i++) {
+        // Double the estimated length for safety, as each step can expand the string
+        int len = strlen(current);
+        char* next_str = (char*)malloc((len * 2 + 1) * sizeof(char));
+        int next_idx = 0;
+        
+        int j = 0;
+        while (j < len) {
+            int count = 1;
+            // Count consecutive identical characters
+            while (j + 1 < len && current[j] == current[j + 1]) {
+                count++;
+                j++;
+            }
+            
+            // Append count and character to the next sequence string
+            // sprintf returns the number of characters written, advancing our index
+            next_idx += sprintf(&next_str[next_idx], "%d%c", count, current[j]);
+            j++;
+        }
+        
+        // Null-terminate the new string
+        next_str[next_idx] = '\0';
+        
+        // Free the old memory block and swap pointers
+        free(current);
+        current = next_str;
+    }
+    
+    return current;
+}
