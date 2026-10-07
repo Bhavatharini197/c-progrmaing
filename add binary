@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* addBinary(char* a, char* b) {
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    
+    // The max size of the result is the max length of a or b, plus 1 for potential carry-over.
+    int max_len = (len_a > len_b ? len_a : len_b) + 1;
+    
+    // Allocate memory (+1 for the null terminator '\0')
+    char* result = (char*)malloc((max_len + 1) * sizeof(char));
+    
+    result[max_len] = '\0'; // Set the null terminator at the very end
+    int k = max_len - 1;    // Index to populate the result from right to left
+    
+    int i = len_a - 1;
+    int j = len_b - 1;
+    int carry = 0;
+    
+    // Add digits from right to left
+    while (i >= 0 || j >= 0 || carry) {
+        int sum = carry;
+        if (i >= 0) {
+            sum += a[i] - '0'; // Convert char to int
+            i--;
+        }
+        if (j >= 0) {
+            sum += b[j] - '0'; // Convert char to int
+            j--;
+        }
+        
+        result[k--] = (sum % 2) + '0'; // Convert int back to char
+        carry = sum / 2;
+    }
+    
+    // If the loop finished and didn't use the highest-order index (no final carry),
+    // we shift the pointer forward so we don't return a string with a leading empty space.
+    return &result[k + 1];
+}
